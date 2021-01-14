@@ -2,18 +2,21 @@ import requests
 from bs4 import BeautifulSoup
 import pprint
 
-#pull response data from website page using requests.get
-res = requests.get('https://news.ycombinator.com/news')
-#parse response data from site in HTML and create object
-soup = BeautifulSoup(res.text, 'html.parser')
-#using css selectors, store list of links and votes
-links = soup.select('.storylink')
-subtext = soup.select('.subtext')
-
+def num_of_pages_to_scrape(num_pages):
+  links = []
+  subtext = []
+  for p in range(1, num_pages+1):
+    #pull response data from website page using requests.get
+    res = requests.get(f'https://news.ycombinator.com/news?p={p}')
+    #parse response data from site in HTML and create object
+    soup = BeautifulSoup(res.text, 'html.parser')
+    #using css selectors, store list of links and votes
+    links.append(soup.select('.storylink'))
+    subtext.append(soup.select('.subtext'))
+  return create_custom_hn(links, subtext)
 #sorts the stories from hn list of stories by the number of votes, with highest vote count first.
 def sort_stories_by_votes(hnlist):
-  return sorted(hnlist, key = lambda k:k['votes'], reverse = True)
-
+  return(sorted(hnlist, key = lambda k:k['votes'], reverse = True))
 
 #create list of link titles from links provided with votes over 100.
 def create_custom_hn(links, subtext):
@@ -28,4 +31,4 @@ def create_custom_hn(links, subtext):
         hn.append({'title': title, 'link': href, 'votes': points})
   return sort_stories_by_votes(hn)
 
-pprint.pprint(create_custom_hn(links, subtext))
+pprint.pprint(num_of_pages_to_scrape(3))
