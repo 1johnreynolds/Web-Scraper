@@ -11,8 +11,9 @@ def num_of_pages_to_scrape(num_pages):
     #parse response data from site in HTML and create object
     soup = BeautifulSoup(res.text, 'html.parser')
     #using css selectors, store list of links and votes
-    links.append(soup.select('.storylink'))
-    subtext.append(soup.select('.subtext'))
+    links.extend(soup.select('.storylink'))
+    subtext.extend(soup.select('.subtext'))
+  #print(links)
   return create_custom_hn(links, subtext)
 #sorts the stories from hn list of stories by the number of votes, with highest vote count first.
 def sort_stories_by_votes(hnlist):
