@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import pprint
 
-#allows for multiple pages to be scraped instead of just one single page, then sends all elements from pages to scrape and sort.
+#allows for multiple pages to be read in instead of just one single page, then sends all elements from pages to scrape and sort.
 def num_of_pages_to_scrape(num_pages):
   links = []
   subtext = []
@@ -21,7 +21,7 @@ def num_of_pages_to_scrape(num_pages):
 def sort_stories_by_votes(hnlist):
   return(sorted(hnlist, key = lambda k:k['votes'], reverse = True))
 
-#create list of link titles from links provided with votes over 100.
+#create list of links and their titles from links provided, with votes over 100.
 def create_custom_hn(links, subtext):
   hn = []
   for index, item in enumerate(links):
