@@ -10,6 +10,11 @@ soup = BeautifulSoup(res.text, 'html.parser')
 links = soup.select('.storylink')
 subtext = soup.select('.subtext')
 
+#sorts the stories from hn list of stories by the number of votes, with highest vote count first.
+def sort_stories_by_votes(hnlist):
+  return sorted(hnlist, key = lambda k:k['votes'], reverse = True)
+
+
 #create list of link titles from links provided with votes over 100.
 def create_custom_hn(links, subtext):
   hn = []
@@ -21,7 +26,6 @@ def create_custom_hn(links, subtext):
       points = int(vote[0].getText().replace(' points', ''))
       if points > 100:
         hn.append({'title': title, 'link': href, 'votes': points})
-
-  return hn
+  return sort_stories_by_votes(hn)
 
 pprint.pprint(create_custom_hn(links, subtext))
